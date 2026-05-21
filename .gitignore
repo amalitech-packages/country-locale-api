@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+lib/
+*.tsbuildinfo
+.tsbuildinfo
+
+# Test output
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Caches
+.cache/
+.eslintcache
+.turbo/
+.parcel-cache/
+
+# npm/yarn temp
+.npm/
+.yarn/cache
+.yarn/install-state.gz
+.pnp.*

@@ -1,0 +1,37 @@
+name: Feature request
+description: Propose a new feature or improvement.
+title: 'feat: <short summary>'
+labels: ['enhancement', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this to propose new functionality. For questions, please use Discussions.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem are you trying to solve? Who is affected? Why does it matter?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should the API or behavior look like? A code snippet of the desired usage helps a lot.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you thought about and why you discarded them.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Links to prior art, related issues, or anything else useful.

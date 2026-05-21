@@ -1,0 +1,27 @@
+# Default to LF line endings for all text files.
+# Critical for shell scripts and YAML running in Linux CI.
+* text=auto eol=lf
+
+# Explicit overrides
+*.sh        text eol=lf
+*.bash      text eol=lf
+*.mjs       text eol=lf
+*.cjs       text eol=lf
+*.js        text eol=lf
+*.ts        text eol=lf
+*.tsx       text eol=lf
+*.json      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.md        text eol=lf
+
+# Binary files
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.pdf       binary
+
+# Lockfiles — keep diffs collapsed in PR views
+pnpm-lock.yaml linguist-generated=true

@@ -1,0 +1,11 @@
+# Default owners for everything in this repo.
+# Lines later in the file take precedence.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+* @amalitech-packages/maintainers
+
+# Workflow and security-sensitive paths require a stricter review.
+/.github/             @amalitech-packages/maintainers
+/.github/workflows/   @amalitech-packages/maintainers
+/SECURITY.md          @amalitech-packages/maintainers
+/LICENSE              @amalitech-packages/maintainers
