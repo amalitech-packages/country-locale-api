@@ -44,7 +44,7 @@
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "clean": "rimraf dist .tsbuildinfo",
+    "clean": "rimraf --glob dist \"*.tsbuildinfo\"",
     "dev": "tsc -p tsconfig.build.json --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -57,7 +57,8 @@
     "changeset": "changeset",
     "version-package": "changeset version",
     "release": "pnpm build && changeset publish",
-    "prepublishOnly": "pnpm clean && pnpm build && pnpm test",
+    "prepack": "pnpm clean && pnpm build",
+    "prepublishOnly": "pnpm test",
     "prepare": "husky || true",
     "setup": "node scripts/setup.mjs"
   },
