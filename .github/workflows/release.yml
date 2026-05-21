@@ -79,3 +79,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+
+      - name: Ensure npm package is public
+        shell: bash
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken "${NPM_TOKEN}"
+          npm access set status=public @amali-tech/country-locale-api --registry=https://registry.npmjs.org/
+
+          public_npmrc="$(mktemp)"
+          for attempt in 1 2 3 4 5 6; do
+            if npm --userconfig "${public_npmrc}" view @amali-tech/country-locale-api version --registry=https://registry.npmjs.org/; then
+              exit 0
+            fi
+
+            echo "Package is not publicly visible yet, retrying (${attempt}/6)..."
+            sleep 10
+          done
+
+          echo "::error::@amali-tech/country-locale-api was published but is not publicly visible from npm."
+          exit 1
