@@ -7,9 +7,9 @@
 export { countries } from './data/countries.js';
 
 export type { Country, Currency, NumberFormat } from './types/country.js';
-export type { LocaleOption } from './types/option.js';
+export type { LocaleOption, NumberFormatOption } from './types/option.js';
 
-export { countryOptions, currencyOptions } from './options.js';
+export { countryOptions, currencyOptions, numberFormatOptions } from './options.js';
 
 export { getCountryInfo } from './utils/getCountryInfo.js';
 export { formatCurrency } from './utils/formatCurrency.js';

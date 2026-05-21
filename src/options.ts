@@ -29,7 +29,7 @@ export const currencyOptions: ReadonlyArray<LocaleOption> = Array.from(
 export const numberFormatOptions: ReadonlyArray<NumberFormatOption> = Array.from(
   new Map(
     countries.map((country) => [
-      country.numberFormat,
+      `${country.numberFormat.decimalSeparator}|${country.numberFormat.thousandSeparator}`,
       {
         key: country.locale,
         countryName: country.name,

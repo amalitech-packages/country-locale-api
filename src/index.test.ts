@@ -7,6 +7,7 @@ import {
   formatDate,
   formatNumber,
   getCountryInfo,
+  numberFormatOptions,
 } from './index.js';
 
 describe('countries', () => {
@@ -70,6 +71,25 @@ describe('currencyOptions', () => {
     const eurEntries = currencyOptions.filter((option) => option.label === 'EUR');
 
     expect(eurEntries).toHaveLength(1);
+  });
+});
+
+describe('numberFormatOptions', () => {
+  it('deduplicates countries that share a number format', () => {
+    const seen = new Set(
+      numberFormatOptions.map((option) => option.label.match(/\(([^)]+)\)/)?.[1]),
+    );
+
+    expect(numberFormatOptions.length).toBe(seen.size);
+    expect(numberFormatOptions.length).toBeLessThan(countries.length);
+  });
+
+  it('labels each option with the country name and example', () => {
+    const option = numberFormatOptions.find((entry) => entry.countryName === 'Germany');
+
+    expect(option).toBeDefined();
+    expect(option?.label).toBe('Germany Format (1.234.567,89)');
+    expect(option?.key).toBe('de-DE');
   });
 });
 
