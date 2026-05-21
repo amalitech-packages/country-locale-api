@@ -36,12 +36,12 @@ describe('countries', () => {
 describe('countryOptions', () => {
   it('maps countries to key/label entries for selects', () => {
     expect(countryOptions.length).toBe(countries.length);
-    expect(countryOptions[0]).toEqual({ key: 'GH', label: 'Ghana' });
+    expect(countryOptions[0]).toEqual({ key: 'Ghana', label: 'Ghana' });
   });
 
   it('contains a United States entry', () => {
     expect(countryOptions).toContainEqual({
-      key: 'US',
+      key: 'United States',
       label: 'United States',
     });
   });
