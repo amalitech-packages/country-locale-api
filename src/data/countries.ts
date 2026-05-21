@@ -320,4 +320,4 @@ export const countries: Country[] = [
       example: '1 234 567,89',
     },
   },
-];
+].sort((a, b) => a.name.localeCompare(b.name));

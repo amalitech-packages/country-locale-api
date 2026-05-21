@@ -7,6 +7,7 @@ import {
   formatDate,
   formatNumber,
   getCountryInfo,
+  numberFormatOptions,
 } from './index.js';
 
 describe('countries', () => {
@@ -36,7 +37,14 @@ describe('countries', () => {
 describe('countryOptions', () => {
   it('maps countries to key/label entries for selects', () => {
     expect(countryOptions.length).toBe(countries.length);
-    expect(countryOptions[0]).toEqual({ key: 'Ghana', label: 'Ghana' });
+    expect(countryOptions).toContainEqual({ key: 'Ghana', label: 'Ghana' });
+  });
+
+  it('is sorted alphabetically by name', () => {
+    const names = countryOptions.map((option) => option.label);
+    const sorted = [...names].sort((a, b) => a.localeCompare(b));
+
+    expect(names).toEqual(sorted);
   });
 
   it('contains a United States entry', () => {
@@ -49,14 +57,39 @@ describe('countryOptions', () => {
 
 describe('currencyOptions', () => {
   it('maps currencies to symbol/code entries for selects', () => {
-    expect(currencyOptions).toContainEqual({ key: '$', label: 'USD' });
-    expect(currencyOptions).toContainEqual({ key: '\u20AC', label: 'EUR' });
+    expect(currencyOptions).toContainEqual({
+      key: '$',
+      label: 'USD',
+      countryName: 'United States',
+    });
+    expect(currencyOptions).toContainEqual(
+      expect.objectContaining({ key: '\u20AC', label: 'EUR' }),
+    );
   });
 
   it('deduplicates currencies shared by multiple countries', () => {
     const eurEntries = currencyOptions.filter((option) => option.label === 'EUR');
 
     expect(eurEntries).toHaveLength(1);
+  });
+});
+
+describe('numberFormatOptions', () => {
+  it('deduplicates countries that share a number format', () => {
+    const seen = new Set(
+      numberFormatOptions.map((option) => option.label.match(/\(([^)]+)\)/)?.[1]),
+    );
+
+    expect(numberFormatOptions.length).toBe(seen.size);
+    expect(numberFormatOptions.length).toBeLessThan(countries.length);
+  });
+
+  it('labels each option with the country name and example', () => {
+    const option = numberFormatOptions.find((entry) => entry.countryName === 'Germany');
+
+    expect(option).toBeDefined();
+    expect(option?.label).toBe('Germany Format (1.234.567,89)');
+    expect(option?.key).toBe('de-DE');
   });
 });
 

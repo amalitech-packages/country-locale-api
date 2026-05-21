@@ -1,5 +1,5 @@
 import { countries } from './data/countries.js';
-import type { LocaleOption } from './types/option.js';
+import type { LocaleOption, NumberFormatOption } from './types/option.js';
 
 /**
  * Pre-built country options for dropdown/select inputs.
@@ -21,7 +21,20 @@ export const currencyOptions: ReadonlyArray<LocaleOption> = Array.from(
   new Map(
     countries.map((country) => [
       country.currency.code,
-      { key: country.currency.symbol, label: country.currency.code },
+      { key: country.currency.symbol, label: country.currency.code, countryName: country.name },
+    ]),
+  ).values(),
+);
+
+export const numberFormatOptions: ReadonlyArray<NumberFormatOption> = Array.from(
+  new Map(
+    countries.map((country) => [
+      `${country.numberFormat.decimalSeparator}|${country.numberFormat.thousandSeparator}`,
+      {
+        key: country.locale,
+        countryName: country.name,
+        label: `${country.name} Format (${country.numberFormat.example})`,
+      },
     ]),
   ).values(),
 );
