@@ -1,16 +1,17 @@
 /**
- * @amali-tech/PACKAGE_NAME
+ * @amali-tech/country-locale-api
  *
- * Entry point for the package. Replace the example below with your real
- * exports. Keep named exports only — avoid `export default`.
+ * Entry point for the package. Keep named exports only.
  */
 
-export const version: string = '0.0.0';
+export { countries } from './data/countries.js';
 
-export interface GreetOptions {
-  readonly name: string;
-}
+export type { Country, Currency, NumberFormat } from './types/country.js';
+export type { LocaleOption } from './types/option.js';
 
-export function greet(options: GreetOptions): string {
-  return `Hello, ${options.name}!`;
-}
+export { countryOptions, currencyOptions } from './options.js';
+
+export { getCountryInfo } from './utils/getCountryInfo.js';
+export { formatCurrency } from './utils/formatCurrency.js';
+export { formatNumber } from './utils/formatNumber.js';
+export { formatDate } from './utils/formatDate.js';

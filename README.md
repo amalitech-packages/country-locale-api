@@ -1,75 +1,135 @@
-# @amali-tech package template
+# @elliot_collab/country-locale-api
 
-> The starting point for every package published under the [`@amali-tech`](https://www.npmjs.com/org/amali-tech) npm scope.
+Country, currency, number, and date helpers for ERP applications.
 
-This is a **GitHub template repository**. To start a new package, click the green **"Use this template"** button at the top of the GitHub page and create a new repo under the [`amalitech-packages`](https://github.com/amalitech-packages) org.
+This package gives product teams a small typed API for common locale workflows:
 
-The template ships pre-wired with:
+- Country dropdown options: `[{ key: "US", label: "United States" }]`
+- Currency dropdown options: `[{ key: "$", label: "USD" }]`
+- Country lookup by name, ISO code, or supported alias
+- Currency, number, and date formatting by BCP 47 locale
 
-- **TypeScript** strict mode, ESM-first build
-- **Vitest** for testing (unit + coverage)
-- **ESLint 9** (flat config) + **Prettier**
-- **Changesets** for versioning and automated npm releases
-- **GitHub Actions** for CI (lint, typecheck, build, test) and release publishing with [npm provenance](https://docs.npmjs.com/generating-provenance-statements)
-- **Husky** + **lint-staged** pre-commit hooks
-- **Dependabot** for dependency updates
-- **CodeQL** for security scanning
-- Apache-2.0 license, CODEOWNERS, issue & PR templates
-
----
-
-## After creating your repo from this template
-
-1. Clone it locally and run the setup script — it will rename every placeholder for you:
-
-   ```bash
-   git clone https://github.com/amalitech-packages/<your-package-name>.git
-   cd <your-package-name>
-   corepack enable
-   pnpm install
-   pnpm setup
-   ```
-
-2. The setup script asks for:
-   - The package name (e.g. `logger`, `redis-cache`) — used as `@amali-tech/<name>`
-   - A one-line description
-   - Whether the package will be **public** or **private** on npm
-
-   It rewrites `package.json`, this README, and a few other files, then deletes itself.
-
-3. Write your code in `src/`, tests beside the source as `*.test.ts`.
-
-4. Open a PR. Don't forget the changeset (`pnpm changeset`).
-
----
-
-## Daily commands
+## Installation
 
 ```bash
-pnpm build         # tsc → dist/
-pnpm dev           # tsc --watch
-pnpm test          # vitest
-pnpm test:watch
-pnpm typecheck
+pnpm add @elliot_collab/country-locale-api
+```
+
+```bash
+npm install @elliot_collab/country-locale-api
+```
+
+Node.js 22 or newer is required.
+
+## Usage
+
+```ts
+import {
+  countryOptions,
+  currencyOptions,
+  formatCurrency,
+  formatDate,
+  formatNumber,
+  getCountryInfo,
+} from '@elliot_collab/country-locale-api';
+
+countryOptions;
+// [{ key: "GH", label: "Ghana" }, { key: "US", label: "United States" }, ...]
+
+currencyOptions;
+// [{ key: "$", label: "USD" }, ...]
+
+getCountryInfo('USA');
+// Full country metadata for the United States
+
+formatCurrency(1234.56, 'en-US');
+// "$1,234.56"
+
+formatNumber(1234567.89, 'de-DE');
+// "1.234.567,89"
+
+formatDate(new Date(2025, 2, 15), 'en-GB');
+// "15/03/2025"
+```
+
+## API
+
+### `countries`
+
+Readonly country metadata suitable for ERP configuration screens, address forms,
+and locale-aware defaults. Each country includes ISO code, display name, locale,
+phone code, currency, date/time patterns, number separators, and timezone data
+where available.
+
+### `countryOptions`
+
+Pre-built select options derived from `countries`.
+
+```ts
+type LocaleOption = {
+  key: string;
+  label: string;
+};
+```
+
+`key` is the ISO 3166-1 alpha-2 country code. `label` is the country name.
+
+### `currencyOptions`
+
+Pre-built select options derived from unique currencies in `countries`.
+
+`key` is the currency symbol. `label` is the ISO 4217 currency code.
+
+### `getCountryInfo(countryName)`
+
+Looks up country metadata by:
+
+- Country name, such as `"Ghana"`
+- ISO country code, such as `"GH"`
+- Supported alias, such as `"USA"`
+
+The lookup is case-insensitive and trims whitespace. Unknown values return
+`undefined`.
+
+### `formatCurrency(amount, locale)`
+
+Formats a finite number with `Intl.NumberFormat` and infers the currency from
+the locale's country/region where available. Unsupported countries fall back to
+USD.
+
+### `formatNumber(value, locale)`
+
+Formats a finite number with `Intl.NumberFormat`.
+
+### `formatDate(date, locale)`
+
+Formats a `Date`, ISO-8601 string, or millisecond timestamp using the date
+pattern configured for the locale's country. Unknown countries fall back to
+`dd/MM/yyyy`.
+
+## Development
+
+```bash
+corepack enable
+pnpm install
 pnpm lint
-pnpm format
-pnpm changeset     # record a version bump for your PR
+pnpm typecheck
+pnpm build
+pnpm test
 ```
 
 ## Releasing
 
-You don't publish manually. On every merge to `main`:
+Releases are automated with Changesets and GitHub Actions. Add a changeset for
+public API or runtime behavior changes:
 
-1. The **Release** workflow runs.
-2. If there are pending changesets, it opens a _"Version Packages"_ PR.
-3. When a maintainer merges that PR, the workflow publishes to npm with provenance and tags the GitHub release.
+```bash
+pnpm changeset
+```
 
-You'll need to set the `NPM_TOKEN` secret on each repo (npm Automation token, granular scope). See [CONTRIBUTING.md](./CONTRIBUTING.md#releasing).
-
-## Where the org-level rules live
-
-This template carries its own `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, issue templates, and PR template. If you also create a [`amalitech-packages/.github`](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) repo at the org level, those files become the org-wide default and individual repos can omit them — pick whichever you prefer.
+Merges to `main` create a version PR. When that PR is merged, the release
+workflow publishes to npm with provenance.
 
 ## License
 
-[Apache-2.0](./LICENSE). © AmaliTech.
+[Apache-2.0](./LICENSE). Copyright AmaliTech.
