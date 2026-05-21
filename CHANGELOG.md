@@ -1,5 +1,11 @@
 # @amali-tech/country-locale-api
 
+## 0.1.2
+
+### Patch Changes
+
+- 62eef99: patch
+
 ## 0.1.1
 
 ### Patch Changes
