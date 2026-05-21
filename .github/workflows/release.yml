@@ -54,9 +54,16 @@ jobs:
           fi
 
           npm config set //registry.npmjs.org/:_authToken "${NPM_TOKEN}"
-          npm whoami --registry=https://registry.npmjs.org/
-          npm access ls-packages @amali-tech --registry=https://registry.npmjs.org/ >/dev/null || {
-            echo "::error::NPM_TOKEN cannot access the @amali-tech npm scope. Ensure the npm org exists and the token owner can publish public packages to it."
+          NPM_USER="$(npm whoami --registry=https://registry.npmjs.org/)"
+          echo "Authenticated to npm as ${NPM_USER}"
+
+          npm org ls amali-tech "${NPM_USER}" --registry=https://registry.npmjs.org/ >/dev/null || {
+            echo "::error::NPM_TOKEN belongs to ${NPM_USER}, but that npm user is not visible as a member of the amali-tech org. Add the user to the npm org with publish rights, or replace NPM_TOKEN with a token from an authorized org member."
+            exit 1
+          }
+
+          npm access list packages @amali-tech --registry=https://registry.npmjs.org/ >/dev/null || {
+            echo "::error::NPM_TOKEN cannot list packages under the @amali-tech npm scope. Ensure ${NPM_USER} has publish access to public packages in the org."
             exit 1
           }
 
