@@ -1,17 +1,24 @@
 {
-  "name": "@amali-tech/PACKAGE_NAME",
+  "name": "@elliot_collab/country-locale-api",
   "version": "0.0.0",
-  "description": "TODO: one-line description of what this package does.",
-  "keywords": [],
+  "description": "Library of countries with locale and currency information",
+  "keywords": [
+    "country",
+    "locale",
+    "currency",
+    "language",
+    "timezone",
+    "phone-code"
+  ],
   "license": "Apache-2.0",
   "author": "AmaliTech",
-  "homepage": "https://github.com/amalitech-packages/PACKAGE_NAME#readme",
+  "homepage": "https://github.com/elliotagbettor-collab/country-locale-api#readme",
   "bugs": {
-    "url": "https://github.com/amalitech-packages/PACKAGE_NAME/issues"
+    "url": "https://github.com/elliotagbettor-collab/country-locale-api/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/amalitech-packages/PACKAGE_NAME.git"
+    "url": "git+https://github.com/elliotagbettor-collab/country-locale-api.git"
   },
   "type": "module",
   "main": "./dist/index.js",
