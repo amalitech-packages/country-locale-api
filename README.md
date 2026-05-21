@@ -1,4 +1,4 @@
-# @elliot_collab/country-locale-api
+# @amali-tech/country-locale-api
 
 Country, currency, number, and date helpers for ERP applications.
 
@@ -12,11 +12,11 @@ This package gives product teams a small typed API for common locale workflows:
 ## Installation
 
 ```bash
-pnpm add @elliot_collab/country-locale-api
+pnpm add @amali-tech/country-locale-api
 ```
 
 ```bash
-npm install @elliot_collab/country-locale-api
+npm install @amali-tech/country-locale-api
 ```
 
 Node.js 22 or newer is required.
@@ -31,7 +31,7 @@ import {
   formatDate,
   formatNumber,
   getCountryInfo,
-} from '@elliot_collab/country-locale-api';
+} from '@amali-tech/country-locale-api';
 
 countryOptions;
 // [{ key: "GH", label: "Ghana" }, { key: "US", label: "United States" }, ...]

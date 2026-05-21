@@ -43,6 +43,23 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Validate npm publish access
+        shell: bash
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "${NPM_TOKEN}" ]; then
+            echo "::error::NPM_TOKEN is not configured. Add an npm Automation token with publish access to the @amali-tech scope."
+            exit 1
+          fi
+
+          npm config set //registry.npmjs.org/:_authToken "${NPM_TOKEN}"
+          npm whoami --registry=https://registry.npmjs.org/
+          npm access ls-packages @amali-tech --registry=https://registry.npmjs.org/ >/dev/null || {
+            echo "::error::NPM_TOKEN cannot access the @amali-tech npm scope. Ensure the npm org exists and the token owner can publish public packages to it."
+            exit 1
+          }
+
       - name: Create version PR or publish to npm
         id: changesets
         uses: changesets/action@v1
