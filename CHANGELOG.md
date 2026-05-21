@@ -1,5 +1,11 @@
 # @amali-tech/country-locale-api
 
+## 0.1.1
+
+### Patch Changes
+
+- 7124356: provided options for number formatiing
+
 ## 0.1.0
 
 ### Minor Changes
