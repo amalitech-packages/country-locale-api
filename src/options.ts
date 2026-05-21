@@ -7,7 +7,7 @@ import type { LocaleOption } from './types/option.js';
  * Each entry has `{ key: "<ISO country code>", label: "<Country name>" }`.
  */
 export const countryOptions: ReadonlyArray<LocaleOption> = countries.map((country) => ({
-  key: country.code,
+  key: country.name,
   label: country.name,
 }));
 

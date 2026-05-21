@@ -1,5 +1,5 @@
 {
-  "name": "@elliot_collab/country-locale-api",
+  "name": "@amali-tech/country-locale-api",
   "version": "0.0.0",
   "description": "Library of countries with locale and currency information",
   "keywords": [
@@ -12,13 +12,13 @@
   ],
   "license": "Apache-2.0",
   "author": "AmaliTech",
-  "homepage": "https://github.com/elliotagbettor-collab/country-locale-api#readme",
+  "homepage": "https://github.com/amalitech-packages/country-locale-api#readme",
   "bugs": {
-    "url": "https://github.com/elliotagbettor-collab/country-locale-api/issues"
+    "url": "https://github.com/amalitech-packages/country-locale-api/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elliotagbettor-collab/country-locale-api.git"
+    "url": "git+https://github.com/amalitech-packages/country-locale-api.git"
   },
   "type": "module",
   "main": "./dist/index.js",
