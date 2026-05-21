@@ -1,6 +1,6 @@
 {
   "name": "@amali-tech/country-locale-api",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Library of countries with locale and currency information",
   "keywords": [
     "country",
