@@ -131,7 +131,9 @@ describe('formatCurrency', () => {
   });
 
   it('falls back to USD when the locale has no supported country', () => {
-    expect(formatCurrency(1234.56, 'en-CA')).toContain('US$');
+    // Esperanto ('eo') is not the locale of any country in the dataset, so the
+    // lookup returns undefined and formatCurrency must fall back to USD.
+    expect(formatCurrency(1234.56, 'eo')).toContain('US$');
   });
 
   it('throws on non-finite numbers and empty locales', () => {
@@ -170,7 +172,7 @@ describe('formatDate', () => {
     expect(formatDate(testDate, 'de-DE')).toBe('15.03.2025');
     expect(formatDate(testDate, 'en-GH')).toBe('15/03/2025');
     expect(formatDate(testDate, 'ja-JP')).toBe('2025/03/15');
-    expect(formatDate(testDate, 'zh-CN')).toBe('2025-03-15');
+    expect(formatDate(testDate, 'zh-CN')).toBe('2025/03/15');
   });
 
   it('accepts ISO strings and timestamp numbers', () => {
@@ -181,7 +183,9 @@ describe('formatDate', () => {
   });
 
   it('falls back to dd/MM/yyyy for unknown regions', () => {
-    expect(formatDate(testDate, 'en-CA')).toBe('15/03/2025');
+    // 'eo' (Esperanto) is not used by any country, so the lookup falls back to
+    // the default pattern instead of a country-specific one.
+    expect(formatDate(testDate, 'eo')).toBe('15/03/2025');
   });
 
   it('throws on invalid date or empty locale', () => {

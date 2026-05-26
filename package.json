@@ -60,7 +60,8 @@
     "prepack": "pnpm clean && pnpm build",
     "prepublishOnly": "pnpm test",
     "prepare": "husky || true",
-    "setup": "node scripts/setup.mjs"
+    "setup": "node scripts/setup.mjs",
+    "generate:countries": "node scripts/generate-countries.mjs"
   },
   "publishConfig": {
     "access": "public",

@@ -6,3 +6,5 @@ coverage
 .changeset/*.md
 pnpm-lock.yaml
 *.tsbuildinfo
+scripts/.rest-countries.json
+scripts/.zone.tab
