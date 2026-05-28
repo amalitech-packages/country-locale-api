@@ -75,13 +75,11 @@ describe('currencyOptions', () => {
 });
 
 describe('numberFormatOptions', () => {
-  it('deduplicates countries that share a number format', () => {
-    const seen = new Set(
-      numberFormatOptions.map((option) => option.label.match(/\(([^)]+)\)/)?.[1]),
-    );
+  it('emits one entry per country with a unique locale key', () => {
+    expect(numberFormatOptions.length).toBe(countries.length);
 
-    expect(numberFormatOptions.length).toBe(seen.size);
-    expect(numberFormatOptions.length).toBeLessThan(countries.length);
+    const keys = numberFormatOptions.map((option) => option.key);
+    expect(new Set(keys).size).toBe(keys.length);
   });
 
   it('labels each option with the country name and example', () => {

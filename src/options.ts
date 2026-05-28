@@ -73,35 +73,15 @@ function buildCurrencyOptions(): LocaleOption[] {
 
 export const currencyOptions: ReadonlyArray<LocaleOption> = buildCurrencyOptions();
 
-// Canonical issuer per number-format signature (decimal|thousand separator).
-// Picks the country whose locale is the most widely recognised representative
-// of a given grouping convention.
-const PRIMARY_FOR_NUMBER_FORMAT: Readonly<Record<string, string>> = {
-  '.|,': 'US', // English/anglophone grouping: 1,234,567.89
-  ',|.': 'DE', // German/European grouping: 1.234.567,89
-  ',| ': 'FR', // French grouping (regular or NBSP): 1 234 567,89
-  '.| ': 'ZA', // South African / Swiss-EN style: 1 234 567.89
-  '.|’': 'CH', // Swiss German apostrophe: 1’234’567.89
-  ".|'": 'CH', // Some locales emit ASCII apostrophe
-};
-
-function buildNumberFormatOptions(): NumberFormatOption[] {
-  const groups = new Map<string, Country[]>();
-  for (const country of countries) {
-    const key = `${country.numberFormat.decimalSeparator}|${country.numberFormat.thousandSeparator}`;
-    if (!groups.has(key)) groups.set(key, []);
-    groups.get(key)!.push(country);
-  }
-  const out: NumberFormatOption[] = [];
-  for (const [sig, group] of groups) {
-    const rep = pickPrimary(group, PRIMARY_FOR_NUMBER_FORMAT[sig]);
-    out.push({
-      key: rep.locale,
-      countryName: rep.name,
-      label: `${rep.name} Format (${rep.numberFormat.example})`,
-    });
-  }
-  return out;
-}
-
-export const numberFormatOptions: ReadonlyArray<NumberFormatOption> = buildNumberFormatOptions();
+/**
+ * Pre-built number-format options for dropdown/select inputs.
+ *
+ * One entry per country, keyed by the country's BCP 47 locale. The label
+ * includes the country name and a localised example of its number format
+ * (e.g. "Germany Format (1.234.567,89)").
+ */
+export const numberFormatOptions: ReadonlyArray<NumberFormatOption> = countries.map((country) => ({
+  key: country.locale,
+  countryName: country.name,
+  label: `${country.name} Format (${country.numberFormat.example})`,
+}));

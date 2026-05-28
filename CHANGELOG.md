@@ -1,5 +1,11 @@
 # @amali-tech/country-locale-api
 
+## 1.0.1
+
+### Patch Changes
+
+- `numberFormatOptions` now emits one entry per country instead of deduplicating by separator signature. Each country gets its own option with a locale key and a localised example, so the list reflects the full set of countries rather than the ~5 underlying formatting conventions.
+
 ## 1.0.0
 
 ### Major Changes
