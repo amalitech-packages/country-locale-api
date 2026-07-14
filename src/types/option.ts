@@ -5,3 +5,5 @@ export interface LocaleOption {
 }
 
 export type NumberFormatOption = Pick<LocaleOption, 'key' | 'label' | 'countryName'>;
+
+export type DateFormatOption = Pick<LocaleOption, 'key' | 'label' | 'countryName'>;

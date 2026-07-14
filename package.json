@@ -1,6 +1,6 @@
 {
   "name": "@amali-tech/country-locale-api",
-  "version": "0.1.2",
+  "version": "1.1.0",
   "description": "Library of countries with locale and currency information",
   "keywords": [
     "country",
@@ -60,11 +60,12 @@
     "prepack": "pnpm clean && pnpm build",
     "prepublishOnly": "pnpm test",
     "prepare": "husky || true",
-    "setup": "node scripts/setup.mjs"
+    "setup": "node scripts/setup.mjs",
+    "generate:countries": "node scripts/generate-countries.mjs"
   },
   "publishConfig": {
     "access": "public",
-    "provenance": true,
+    "provenance": false,
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {

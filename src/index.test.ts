@@ -3,6 +3,7 @@ import {
   countries,
   countryOptions,
   currencyOptions,
+  dateFormatOptions,
   formatCurrency,
   formatDate,
   formatNumber,
@@ -58,30 +59,28 @@ describe('countryOptions', () => {
 describe('currencyOptions', () => {
   it('maps currencies to symbol/code entries for selects', () => {
     expect(currencyOptions).toContainEqual({
-      key: '$',
-      label: 'USD',
+      key: 'USD',
+      label: 'USD ($)',
       countryName: 'United States',
     });
     expect(currencyOptions).toContainEqual(
-      expect.objectContaining({ key: '\u20AC', label: 'EUR' }),
+      expect.objectContaining({ key: 'EUR', label: 'EUR (€)', countryName: 'Germany' }),
     );
   });
 
   it('deduplicates currencies shared by multiple countries', () => {
-    const eurEntries = currencyOptions.filter((option) => option.label === 'EUR');
+    const eurEntries = currencyOptions.filter((option) => option.label === 'EUR (€)');
 
     expect(eurEntries).toHaveLength(1);
   });
 });
 
 describe('numberFormatOptions', () => {
-  it('deduplicates countries that share a number format', () => {
-    const seen = new Set(
-      numberFormatOptions.map((option) => option.label.match(/\(([^)]+)\)/)?.[1]),
-    );
+  it('emits one entry per country with a unique locale key', () => {
+    expect(numberFormatOptions.length).toBe(countries.length);
 
-    expect(numberFormatOptions.length).toBe(seen.size);
-    expect(numberFormatOptions.length).toBeLessThan(countries.length);
+    const keys = numberFormatOptions.map((option) => option.key);
+    expect(new Set(keys).size).toBe(keys.length);
   });
 
   it('labels each option with the country name and example', () => {
@@ -90,6 +89,24 @@ describe('numberFormatOptions', () => {
     expect(option).toBeDefined();
     expect(option?.label).toBe('Germany Format (1.234.567,89)');
     expect(option?.key).toBe('de-DE');
+  });
+});
+
+describe('dateFormatOptions', () => {
+  it('emits one entry per country with a unique locale key', () => {
+    expect(dateFormatOptions.length).toBe(countries.length);
+
+    const keys = dateFormatOptions.map((option) => option.key);
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it('labels each option with the country name and date-format pattern', () => {
+    const ghana = countries.find((country) => country.code === 'GH');
+    const option = dateFormatOptions.find((entry) => entry.countryName === 'Ghana');
+
+    expect(option).toBeDefined();
+    expect(option?.key).toBe('en-GH');
+    expect(option?.label).toBe(`Ghana Format (${ghana?.dateFormat})`);
   });
 });
 
@@ -131,7 +148,11 @@ describe('formatCurrency', () => {
   });
 
   it('falls back to USD when the locale has no supported country', () => {
-    expect(formatCurrency(1234.56, 'en-CA')).toContain('US$');
+    // Esperanto ('eo') is not the locale of any country in the dataset, so the
+    // lookup returns undefined and formatCurrency must fall back to USD. The
+    // USD symbol renders as "US$" or "USD" depending on the platform's ICU
+    // data, so accept either form.
+    expect(formatCurrency(1234.56, 'eo')).toMatch(/US\$|USD/);
   });
 
   it('throws on non-finite numbers and empty locales', () => {
@@ -170,7 +191,7 @@ describe('formatDate', () => {
     expect(formatDate(testDate, 'de-DE')).toBe('15.03.2025');
     expect(formatDate(testDate, 'en-GH')).toBe('15/03/2025');
     expect(formatDate(testDate, 'ja-JP')).toBe('2025/03/15');
-    expect(formatDate(testDate, 'zh-CN')).toBe('2025-03-15');
+    expect(formatDate(testDate, 'zh-CN')).toBe('2025/03/15');
   });
 
   it('accepts ISO strings and timestamp numbers', () => {
@@ -181,7 +202,9 @@ describe('formatDate', () => {
   });
 
   it('falls back to dd/MM/yyyy for unknown regions', () => {
-    expect(formatDate(testDate, 'en-CA')).toBe('15/03/2025');
+    // 'eo' (Esperanto) is not used by any country, so the lookup falls back to
+    // the default pattern instead of a country-specific one.
+    expect(formatDate(testDate, 'eo')).toBe('15/03/2025');
   });
 
   it('throws on invalid date or empty locale', () => {
