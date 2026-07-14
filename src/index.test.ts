@@ -3,6 +3,7 @@ import {
   countries,
   countryOptions,
   currencyOptions,
+  dateFormatOptions,
   formatCurrency,
   formatDate,
   formatNumber,
@@ -58,17 +59,17 @@ describe('countryOptions', () => {
 describe('currencyOptions', () => {
   it('maps currencies to symbol/code entries for selects', () => {
     expect(currencyOptions).toContainEqual({
-      key: '$',
-      label: 'USD',
+      key: 'USD',
+      label: 'USD ($)',
       countryName: 'United States',
     });
     expect(currencyOptions).toContainEqual(
-      expect.objectContaining({ key: '\u20AC', label: 'EUR' }),
+      expect.objectContaining({ key: 'EUR', label: 'EUR (€)', countryName: 'Germany' }),
     );
   });
 
   it('deduplicates currencies shared by multiple countries', () => {
-    const eurEntries = currencyOptions.filter((option) => option.label === 'EUR');
+    const eurEntries = currencyOptions.filter((option) => option.label === 'EUR (€)');
 
     expect(eurEntries).toHaveLength(1);
   });
@@ -88,6 +89,24 @@ describe('numberFormatOptions', () => {
     expect(option).toBeDefined();
     expect(option?.label).toBe('Germany Format (1.234.567,89)');
     expect(option?.key).toBe('de-DE');
+  });
+});
+
+describe('dateFormatOptions', () => {
+  it('emits one entry per country with a unique locale key', () => {
+    expect(dateFormatOptions.length).toBe(countries.length);
+
+    const keys = dateFormatOptions.map((option) => option.key);
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it('labels each option with the country name and date-format pattern', () => {
+    const ghana = countries.find((country) => country.code === 'GH');
+    const option = dateFormatOptions.find((entry) => entry.countryName === 'Ghana');
+
+    expect(option).toBeDefined();
+    expect(option?.key).toBe('en-GH');
+    expect(option?.label).toBe(`Ghana Format (${ghana?.dateFormat})`);
   });
 });
 
@@ -130,8 +149,10 @@ describe('formatCurrency', () => {
 
   it('falls back to USD when the locale has no supported country', () => {
     // Esperanto ('eo') is not the locale of any country in the dataset, so the
-    // lookup returns undefined and formatCurrency must fall back to USD.
-    expect(formatCurrency(1234.56, 'eo')).toContain('US$');
+    // lookup returns undefined and formatCurrency must fall back to USD. The
+    // USD symbol renders as "US$" or "USD" depending on the platform's ICU
+    // data, so accept either form.
+    expect(formatCurrency(1234.56, 'eo')).toMatch(/US\$|USD/);
   });
 
   it('throws on non-finite numbers and empty locales', () => {

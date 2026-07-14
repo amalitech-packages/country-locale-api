@@ -1,5 +1,15 @@
 # @amali-tech/country-locale-api
 
+## 1.1.0
+
+### Minor Changes
+
+- add `dateFormatOptions` — one entry per country keyed by locale, labelled with the country name and date-format pattern (e.g. "Ghana Format (dd/MM/yyyy)")
+
+### Patch Changes
+
+- update currency options to use the code as the key
+
 ## 1.0.1
 
 ### Patch Changes

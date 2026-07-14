@@ -1,6 +1,6 @@
 import { countries } from './data/countries.js';
 import type { Country } from './types/country.js';
-import type { LocaleOption, NumberFormatOption } from './types/option.js';
+import type { DateFormatOption, LocaleOption, NumberFormatOption } from './types/option.js';
 
 /**
  * Pre-built country options for dropdown/select inputs.
@@ -63,8 +63,8 @@ function buildCurrencyOptions(): LocaleOption[] {
   for (const [code, group] of groups) {
     const rep = pickPrimary(group, PRIMARY_FOR_CURRENCY[code]);
     out.push({
-      key: rep.currency.symbol,
-      label: rep.currency.code,
+      key: rep.currency.code,
+      label: `${rep.currency.code} (${rep.currency.symbol})`,
       countryName: rep.name,
     });
   }
@@ -84,4 +84,17 @@ export const numberFormatOptions: ReadonlyArray<NumberFormatOption> = countries.
   key: country.locale,
   countryName: country.name,
   label: `${country.name} Format (${country.numberFormat.example})`,
+}));
+
+/**
+ * Pre-built date-format options for dropdown/select inputs.
+ *
+ * One entry per country, keyed by the country's BCP 47 locale. The label
+ * includes the country name and its date-format pattern
+ * (e.g. "Ghana Format (dd/MM/yyyy)").
+ */
+export const dateFormatOptions: ReadonlyArray<DateFormatOption> = countries.map((country) => ({
+  key: country.locale,
+  countryName: country.name,
+  label: `${country.name} Format (${country.dateFormat})`,
 }));
